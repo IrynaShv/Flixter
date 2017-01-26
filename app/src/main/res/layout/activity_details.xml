@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_details2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.shvydchenko.flixter.DetailsActivity"
+    android:background="@color/lighterBackgroundGrey">
+
+    <TextView
+        android:id="@+id/details_movie_overview"
+        android:paddingLeft="@dimen/extra_large_padding"
+        android:paddingRight="@dimen/extra_large_padding"
+        android:paddingBottom="@dimen/large_padding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/DetailsOverviewFont"
+        tools:text="suma luma duma luma you assuming im a human what i gotta do to get it through to you im super human. Innovative and im made of rubber, so that anything you say will ricochet off of me and it'll glue to you"
+        android:layout_below="@+id/details_rating_bar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/details_release_date"
+        android:text="Release Date: "
+        android:theme="@style/DateFont"
+        android:layout_below="@+id/details_movie_title"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:paddingLeft="@dimen/extra_large_padding"
+        android:paddingRight="@dimen/extra_large_padding"
+        android:paddingTop="@dimen/general_padding"
+        android:textSize="@dimen/font_size_small"
+        android:textColor="@color/lightGrey"/>
+
+    <RatingBar
+        android:id="@+id/details_rating_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="10"
+        android:rating="0"
+        android:isIndicator="true"
+        style="@style/betterRatingBar"
+        android:stepSize="0.1"
+        android:paddingTop="@dimen/large_padding"
+        android:layout_marginLeft="@dimen/extra_large_padding"
+        android:paddingBottom="@dimen/general_padding"
+        android:layout_below="@+id/details_release_date"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/details_movie_title"
+        android:paddingLeft="@dimen/extra_large_padding"
+        android:paddingRight="@dimen/extra_large_padding"
+        android:paddingTop="@dimen/general_padding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Rap God"
+        android:layout_marginTop="20dp"
+        android:theme="@style/LargeTitleFont"
+        android:layout_below="@+id/details_movie_video"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="@dimen/font_size_extra_large"
+        android:textStyle="bold"
+        android:textColor="@color/white"/>
+
+    <com.google.android.youtube.player.YouTubePlayerView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/details_movie_video"
+        tools:src="@mipmap/ic_launcher"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"/>
+
+</RelativeLayout>
