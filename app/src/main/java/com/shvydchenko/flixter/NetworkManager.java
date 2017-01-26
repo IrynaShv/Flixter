@@ -1,12 +1,18 @@
 package com.shvydchenko.flixter;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
+import android.os.Handler;
+import android.os.Looper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import cz.msebera.android.httpclient.Header;
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by shvydchenko on 1/25/17.
@@ -14,54 +20,81 @@ import cz.msebera.android.httpclient.Header;
 
 public class NetworkManager {
 
-    private AsyncHttpClient client;
     private NetworkInterface networkInterface;
+    OkHttpClient okHttpClient;
+    private Handler mHandler;
 
     public NetworkManager(NetworkInterface networkInterface) {
-        client = new AsyncHttpClient();
+        okHttpClient = new OkHttpClient();
         this.networkInterface = networkInterface;
+        mHandler = new Handler(Looper.getMainLooper());
     }
 
     void fetchAsyncData(String url) {
-        client.get(url, new JsonHttpResponseHandler() {
+        Request request = new Request.Builder().url(url).build();
+        okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                JSONArray movieJsonResults = null;
-                try {
-                    movieJsonResults = response.getJSONArray("results");
-                    networkInterface.handleMovieDataCallback(movieJsonResults);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable t, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, t, errorResponse);
+            public void onResponse(Call call, final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                } else {
+                    try {
+                        final String responseData = response.body().string();
+                        final JSONArray movieJsonResults = new JSONObject(responseData).getJSONArray("results");
+
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                networkInterface.handleMovieDataCallback(movieJsonResults);
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
     }
+
     void fetchMovieVideoAsyncData(String url, final int position, final Boolean loadDetails) {
-        client.get(url, new JsonHttpResponseHandler() {
+        Request request = new Request.Builder().url(url).build();
+        okHttpClient.newCall(request).enqueue(new Callback() {
+
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                JSONArray movieJsonResults = null;
-                try {
-                    if (response != null) {
-                        movieJsonResults = response.getJSONArray("youtube");
-                        JSONObject videoJson = movieJsonResults.getJSONObject(0);
-                        networkInterface.handleMovieVideoCallback(videoJson.getString("source"), position, loadDetails);
-                    } else {
-                        networkInterface.handleMovieVideoCallback(null, position, loadDetails);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable t, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, t, errorResponse);
+            public void onResponse(Call call, final Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                } else {
+                    try {
+                        final String responseData = response.body().string();
+                        final JSONArray movieJsonResults = new JSONObject(responseData).getJSONArray("youtube");
+                        final String videoSource = movieJsonResults.getJSONObject(0).getString("source");
+
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (videoSource != null) {
+                                    networkInterface.handleMovieVideoCallback(videoSource, position, loadDetails);
+                                } else {
+                                    networkInterface.handleMovieVideoCallback(null, position, loadDetails);
+                                }
+
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
     }

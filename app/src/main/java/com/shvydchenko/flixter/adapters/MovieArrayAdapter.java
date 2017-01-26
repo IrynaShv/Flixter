@@ -97,8 +97,6 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
     }
 
     private String getImagePath(Movie movie) {
-    //    int orientation = context.getResources().getConfiguration().orientation;
-   //     (orientation == Configuration.ORIENTATION_PORTRAIT)
         if (movie.getViewType() == Movie.ViewType.POPULAR) {
                 return movie.getBackdropPath();
         } else if (movie.getViewType() == Movie.ViewType.UNPOPULAR) {
