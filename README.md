@@ -30,6 +30,11 @@ The following **stretch** features are implemented:
     * [x] Less popular videos rely on the detail page should show ratings and a YouTube preview.
 * [x] Replaced android-async-http network client with the popular lower-level  [OkHttp](http://guides.codepath.com/android/Using-OkHttp) networking library.
 
+The following **additional** features are implemented:
+[x] Allows user to long click on the video thumbnail to see the details page.
+[x] Allows user to click on the video to play it in a new Activity in full screen.
+
+
 ## Video Walkthrough
 **Note**: YouTube Videos do not play in the emulator because the YouTube app is not installed. Works on any phone with the YouTube app installed.
 
