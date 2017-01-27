@@ -35,8 +35,8 @@ The following **stretch** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/HBoH1Rt.gifv' title='Video Walkthrough Portrait' width='' alt='Video Walkthrough' />
-<img src='http://i.imgur.com/0VTbpE0.gifv' title='Video Walkthrough Landscape' width='' alt='Video Walkthrough' />
+<img src='http://i.imgur.com/HBoH1Rt.gif' title='Video Walkthrough Portrait' width='' alt='Video Walkthrough' />
+<img src='http://i.imgur.com/0VTbpE0.gif' title='Video Walkthrough Landscape' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
