@@ -28,7 +28,6 @@ public class MovieActivity extends YouTubeBaseActivity implements NetworkInterfa
     private String API_KEY = "a07e22bc18f5cb106bfe4cc1f83ad8ed";
     String url = "https://api.themoviedb.org/3/movie/now_playing?api_key=" + API_KEY;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,12 +57,11 @@ public class MovieActivity extends YouTubeBaseActivity implements NetworkInterfa
         lvItems.setOnItemClickListener( new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                Movie movie = movies.get(position);
-                if (movie.getViewType() == Movie.ViewType.POPULAR) {
-                    if (movie.getVideoSource() != null) {
-                        handleMovieVideoCallback(movie.getVideoSource(), position, true);
+                if (movies.get(position).getViewType() == Movie.ViewType.POPULAR) {
+                    if (movies.get(position).getVideoSource() != null) {
+                        handleMovieVideoCallback(movies.get(position).getVideoSource(), position, true);
                     } else {
-                        networkManager.fetchMovieVideoAsyncData(movie.getVideoApiCallUrl(), position, false);
+                        networkManager.fetchMovieVideoAsyncData(movies.get(position).getVideoApiCallUrl(), position, false);
                     }
                 }
             }
@@ -71,11 +69,10 @@ public class MovieActivity extends YouTubeBaseActivity implements NetworkInterfa
         lvItems.setOnItemLongClickListener( new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long arg3){
-                Movie movie = movies.get(position);
-                if (movie.getVideoSource() != null) {
-                    handleMovieVideoCallback(movie.getVideoSource(), position, true);
+                if ( movies.get(position).getVideoSource() != null) {
+                    handleMovieVideoCallback(movies.get(position).getVideoSource(), position, true);
                 } else {
-                    networkManager.fetchMovieVideoAsyncData(movie.getVideoApiCallUrl(), position, true);
+                    networkManager.fetchMovieVideoAsyncData(movies.get(position).getVideoApiCallUrl(), position, true);
                 }
                 return true;
             }
@@ -98,7 +95,6 @@ public class MovieActivity extends YouTubeBaseActivity implements NetworkInterfa
     public void handleMovieDataCallback(JSONArray movieJsonResults) {
         movieArrayAdapter.clear();
         movies.addAll(Movie.fromJsonArray(movieJsonResults));
-
         swipeContainer.setRefreshing(false);
         movieArrayAdapter.notifyDataSetChanged();
 
@@ -111,7 +107,7 @@ public class MovieActivity extends YouTubeBaseActivity implements NetworkInterfa
        try {
            Movie movie = movies.get(position);
            if (movie.getVideoSource() == null || movie.getVideoSource() != videoSource) {
-               movies.get(position).setVideoSource(videoSource);
+               movie.setVideoSource(videoSource);
            }
            if (loadDetails) {
                Intent intent = new Intent(MovieActivity.this, DetailsActivity.class);
@@ -131,12 +127,4 @@ public class MovieActivity extends YouTubeBaseActivity implements NetworkInterfa
            e.printStackTrace();
        }
     }
-//
-//    public void addVideosToMovies() {
-//        for (int i = 0; i < movies.size(); i++) {
-//            if(movieArrayAdapter.getItem(i).getVideoSource() == null) {
-//                networkManager.fetchMovieVideoAsyncData(movies.get(i).getVideoApiCallUrl(), i, false);
-//            }
-//        }
-//    }
 }

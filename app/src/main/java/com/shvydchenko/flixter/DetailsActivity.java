@@ -21,9 +21,7 @@ public class DetailsActivity extends YouTubeBaseActivity {
 
     private void loadData()
     {
-
         String title = getIntent().getStringExtra("title");
-        String backdropPath = getIntent().getStringExtra("backdrop_path");
         final String videoPath = getIntent().getStringExtra("video_source");
         String overview = getIntent().getStringExtra("overview");
         String releaseDate = getIntent().getStringExtra("release_date");
@@ -38,21 +36,19 @@ public class DetailsActivity extends YouTubeBaseActivity {
 
         if (videoPath != null){
             youTubePlayerView.initialize(YOUTUBE_API_KEY,
-                    new YouTubePlayer.OnInitializedListener() {
-                        @Override
-                        public void onInitializationSuccess(YouTubePlayer.Provider provider,
-                                                            YouTubePlayer youTubePlayer, boolean b) {
+                new YouTubePlayer.OnInitializedListener() {
+                    @Override
+                    public void onInitializationSuccess(YouTubePlayer.Provider provider,
+                                                        YouTubePlayer youTubePlayer, boolean b) {
+                        youTubePlayer.cueVideo(videoPath);
+                    }
 
-                            // do any work here to cue video, play video, etc.
-                            youTubePlayer.cueVideo(videoPath);
-                        }
+                    @Override
+                    public void onInitializationFailure(YouTubePlayer.Provider provider,
+                                                        YouTubeInitializationResult youTubeInitializationResult) {
 
-                        @Override
-                        public void onInitializationFailure(YouTubePlayer.Provider provider,
-                                                            YouTubeInitializationResult youTubeInitializationResult) {
-
-                        }
-                    });
+                    }
+                });
         }
 
         tvTitle.setText(title);

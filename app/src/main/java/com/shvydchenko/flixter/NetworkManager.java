@@ -21,7 +21,7 @@ import okhttp3.Response;
 public class NetworkManager {
 
     private NetworkInterface networkInterface;
-    OkHttpClient okHttpClient;
+    private OkHttpClient okHttpClient;
     private Handler mHandler;
 
     public NetworkManager(NetworkInterface networkInterface) {
@@ -30,7 +30,7 @@ public class NetworkManager {
         mHandler = new Handler(Looper.getMainLooper());
     }
 
-    void fetchAsyncData(String url) {
+    public void fetchAsyncData(String url) {
         Request request = new Request.Builder().url(url).build();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
@@ -61,7 +61,7 @@ public class NetworkManager {
         });
     }
 
-    void fetchMovieVideoAsyncData(String url, final int position, final Boolean loadDetails) {
+    public void fetchMovieVideoAsyncData(String url, final int position, final Boolean loadDetails) {
         Request request = new Request.Builder().url(url).build();
         okHttpClient.newCall(request).enqueue(new Callback() {
 
@@ -98,6 +98,4 @@ public class NetworkManager {
             }
         });
     }
-
-
 }
